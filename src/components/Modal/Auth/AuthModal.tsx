@@ -31,7 +31,7 @@ const AuthModal = (props: Props) => {
     <>
       <Modal isOpen={modalState.open} onClose={handleClose} >
         <ModalOverlay />
-        <ModalContent marginInline='2'>
+        <ModalContent marginInline='2' paddingBlock={2}>
           <ModalHeader textAlign="center">
             {modalState.view === "login" && "Login"}
             {modalState.view === "signup" && "Sign Up"}
