@@ -1,22 +1,37 @@
 import { authModalState } from "@/src/atoms/authModalAtom";
-import { Button, Flex, Input, Text } from "@chakra-ui/react";
+import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  Button,
+  Flex,
+  Input,
+  Text,
+} from "@chakra-ui/react";
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { useSetRecoilState } from "recoil";
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
+import { auth } from "@/src/firebase/clientApp";
+import { FIREBASE_ERRORS } from "@/src/firebase/errors";
 
 type Props = {};
 
 const Login = (props: Props) => {
   const setAuthModalState = useSetRecoilState(authModalState);
 
+  const [signInWithEmailAndPassword, user, loading, error] =
+    useSignInWithEmailAndPassword(auth);
+
   const [loginForm, setLoginForm] = useState({
     email: "",
     password: "",
   });
 
-
   //FireBase Logic
-  const onSubmit = () => {};
-
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    signInWithEmailAndPassword(loginForm.email, loginForm.password);
+  };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLoginForm((prev) => ({
@@ -71,11 +86,51 @@ const Login = (props: Props) => {
         }}
         bg="gray.50"
       />
-      <Button width="100%" height="36px" mt={2} mb={2} type="submit">
+      <Button
+        isLoading={loading}
+        width="100%"
+        height="36px"
+        mt={2}
+        mb={2}
+        type="submit"
+      >
         {" "}
         Login
       </Button>
+      {error && (
+        <Alert
+          status="error"
+          py={0}
+          borderRadius="2px"
+          border="1px solid red"
+          my={2}
+          bg="red.50"
+          color="red.500"
+          mt={4}
+        >
+          <AlertIcon />
 
+          <AlertDescription fontSize={"10pt"}>
+            {FIREBASE_ERRORS[error?.message as keyof typeof FIREBASE_ERRORS]}
+          </AlertDescription>
+        </Alert>
+      )}
+      <Flex fontSize={"9pt"} justifyContent="center">
+        <Text mr={1}>Forgot Password?</Text>
+        <Text
+          color="red.500"
+          fontWeight={500}
+          cursor="pointer"
+          onClick={() => {
+            setAuthModalState((prev) => ({
+              ...prev,
+              view: "resetPassword",
+            }));
+          }}
+        >
+          Reset Password
+        </Text>
+      </Flex>
       <Flex fontSize={"9pt"} justifyContent="center">
         <Text mr={1}>New Here?</Text>
         <Text
@@ -92,6 +147,7 @@ const Login = (props: Props) => {
           SIGN UP
         </Text>
       </Flex>
+      
     </form>
   );
 };
