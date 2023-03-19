@@ -5,13 +5,11 @@ type Props = {};
 
 const SearchInput = (props: Props) => {
   return (
-    <Flex flexGrow={1} mr={2}  align='center'>
-      <InputGroup alignItems={'center'}>
-        <InputLeftElement
-          pointerEvents="none"
-          mt={-0.7}
-          children={<SearchIcon color="gray.300" />}
-        />
+    <Flex flexGrow={1} mr={2} align="center">
+      <InputGroup alignItems={"center"}>
+        <InputLeftElement pointerEvents="none" mt={-0.7}>
+          <SearchIcon color="gray.300" />
+        </InputLeftElement>
         <Input
           fontSize="10pt"
           placeholder="Search Reddit"

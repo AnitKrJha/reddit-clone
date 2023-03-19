@@ -40,8 +40,11 @@ const SignUp = (props: Props) => {
       setError("Passwords Do not Match");
       return;
     }
-
-    createUserWithEmailAndPassword(signUpForm.email, signUpForm.password);
+    try {
+      createUserWithEmailAndPassword(signUpForm.email, signUpForm.password);
+    } catch (err: any) {
+      setError(err.message);
+    }
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {

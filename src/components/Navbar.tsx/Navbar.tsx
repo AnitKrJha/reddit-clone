@@ -10,22 +10,22 @@ import CommunityDirectory from "./CommunityDirectory/CommunityDirectory";
 type Props = {};
 
 const Navbar = (props: Props) => {
-
-  const [user,loading,error]=useAuthState(auth);
+  const [user, loading, error] = useAuthState(auth);
 
   return (
     <Flex bg="white" height={"44px"} padding="6px 12px">
       <Flex align={"center"} mr={2}>
-        <Image src="/images/redditFace.svg" height="30px" />
+        <Image src="/images/redditFace.svg" height="30px" alt="reddit-logo" />
         <Image
           src="/images/redditText.svg"
           height="46px"
+          alt="reddit-text-logo"
           display={{ base: "none", md: "unset" }}
         />
       </Flex>
-      <CommunityDirectory/>
-        <SearchInput/>
-      <RightContent user={user}/>
+      <CommunityDirectory />
+      <SearchInput />
+      <RightContent user={user} />
     </Flex>
   );
 };
