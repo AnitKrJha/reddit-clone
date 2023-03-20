@@ -39,25 +39,27 @@ const UserMenu = (props: Props) => {
         as={Button}
         isLoading={loading}
         mr={2}
-        display='flex'
-        alignItems={'center'}
+        display="flex"
+        alignItems={"center"}
         variant="ghost"
         rounded={"sm"}
         paddingX="1"
         _hover={{ bg: "gray.200" }}
         height={"32px"}
         gap="0"
-        width={{base:'auto',lg:'200px'}}
+        width={{ base: "auto", lg: "200px" }}
         color="gray.800"
-        rightIcon={<ChevronDownIcon marginLeft={{base:-2,lg:-1}} />}
-        leftIcon={<Icon as={TiHome} mr={{base:"-1",lg:'-3'}} fontSize="20" />}
+        rightIcon={<ChevronDownIcon marginLeft={{ base: -2, lg: -1 }} />}
+        leftIcon={
+          <Icon as={TiHome} mr={{ base: "-1", lg: "-3" }} fontSize="20" />
+        }
       >
-        <Text display={{base:'none',lg:'flex'}} ml='2' >Home</Text>
+        <Text display={{ base: "none", lg: "flex" }} ml="2">
+          Home
+        </Text>
       </MenuButton>
       <MenuList>
-           
-        <Communities/>
-
+        <Communities />
       </MenuList>
     </Menu>
   );

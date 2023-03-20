@@ -9,7 +9,7 @@ import Icons from "./Icons";
 import UserMenu from "./UserMenu";
 
 type Props = {
-  user?: User|null;
+  user?: User | null;
 };
 
 const RightContent = (props: Props) => {
@@ -20,12 +20,8 @@ const RightContent = (props: Props) => {
     <>
       <AuthModal />
       <Flex justify={"center"} align="center">
-        {user ? (
-         <Icons/>
-        ) : (
-          <AuthButtons />
-        )}
-        <UserMenu user={user}/>
+        {user ? <Icons /> : <AuthButtons />}
+        <UserMenu user={user} />
       </Flex>
     </>
   );

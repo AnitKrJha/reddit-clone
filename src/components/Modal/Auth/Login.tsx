@@ -147,7 +147,6 @@ const Login = (props: Props) => {
           SIGN UP
         </Text>
       </Flex>
-      
     </form>
   );
 };

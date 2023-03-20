@@ -9,7 +9,7 @@ const PageContentLayout = (props: PropsWithChildren<Props>) => {
   console.log(children);
 
   return (
-    <Flex justify="center">
+    <Flex justify="center" my="4">
       <Flex width="95%" maxWidth="860px" justify="center">
         {/* LHS */}
         <Flex

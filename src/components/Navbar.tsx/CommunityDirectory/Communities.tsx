@@ -26,7 +26,7 @@ const Communities = (props: Props) => {
       >
         <Flex alignItems={"center"} gap="2">
           <Icon as={GrAdd} fontSize="20" />
-          <Text fontSize={'10pt'}>Create Community</Text>
+          <Text fontSize={"10pt"}>Create Community</Text>
         </Flex>
       </MenuItem>
     </>

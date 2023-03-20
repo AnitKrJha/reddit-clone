@@ -63,7 +63,7 @@ const CreateCommunityModal = (props: Props) => {
     setError("");
     setSuccess("");
 
-    var format = /[ `!@#$%^&*()+\-=\[\]{};':"\\|,.<>\/?~]/;
+    const format = /[ `!@#$%^&*()+\-=[\]{};':"\\|,.<>/?~]/;
 
     if (format.test(communityName)) {
       setError(

@@ -7,6 +7,7 @@ import React from "react";
 import CommunityNotFound from "@/src/components/Community/CommunityNotFound";
 import Header from "@/src/components/Community/Header";
 import PageContentLayout from "@/src/components/Layout/PageContentLayout";
+import CreatePostLink from "@/src/components/Community/CreatePostLink";
 
 type Props = {
   communityData: Community;
@@ -24,11 +25,7 @@ const CommunityPage = (props: Props) => {
       <Header communityData={communityData} />
       <PageContentLayout>
         <>
-          <div>he</div>
-          <div>he</div>
-          <div>he</div>
-          <div>he</div>
-          <div>he</div>
+          <CreatePostLink />
         </>
         <>HEllo2</>
       </PageContentLayout>
