@@ -1,4 +1,4 @@
-import { Button, Flex, Input, Stack, Textarea } from "@chakra-ui/react";
+import { Button, Flex, Input, Stack, Text, Textarea } from "@chakra-ui/react";
 import React from "react";
 
 type Props = {
@@ -11,10 +11,13 @@ type Props = {
   ) => void;
   handleCreatePost: () => void;
   loading: boolean;
+  error?: string;
+  success?: string;
 };
 
 const TextInputs = (props: Props) => {
-  const { textInputs, onChange, handleCreatePost, loading } = props;
+  const { textInputs, onChange, handleCreatePost, loading, error, success } =
+    props;
 
   return (
     <Stack spacing={3} width="full">
@@ -56,6 +59,16 @@ const TextInputs = (props: Props) => {
           Post
         </Button>
       </Flex>
+      {error && (
+        <Text color="red" fontSize="9pt">
+          {error}
+        </Text>
+      )}
+      {success && (
+        <Text color="green" fontSize="9pt">
+          {success}
+        </Text>
+      )}
     </Stack>
   );
 };

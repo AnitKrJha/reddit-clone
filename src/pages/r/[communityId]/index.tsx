@@ -1,4 +1,4 @@
-import { firestore } from "@/src/firebase/clientApp";
+import { auth, firestore } from "@/src/firebase/clientApp";
 import { doc, getDoc } from "firebase/firestore";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { Community } from "@/src/atoms/communitiesAtom";
@@ -8,6 +8,8 @@ import CommunityNotFound from "@/src/components/Community/CommunityNotFound";
 import Header from "@/src/components/Community/Header";
 import PageContentLayout from "@/src/components/Layout/PageContentLayout";
 import CreatePostLink from "@/src/components/Community/CreatePostLink";
+import Posts from "@/src/components/Posts/Posts";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 type Props = {
   communityData: Community;
@@ -26,6 +28,7 @@ const CommunityPage = (props: Props) => {
       <PageContentLayout>
         <>
           <CreatePostLink />
+          <Posts communityData={communityData} />
         </>
         <>HEllo2</>
       </PageContentLayout>

@@ -23,7 +23,8 @@ const Header = (props: Props) => {
       <Flex justify="center" flexGrow="1" bg="white">
         <Flex width="95%" maxWidth="860px">
           {communityData.imageUrl ? (
-            <Image />
+            // <Image />
+            <></>
           ) : (
             <Icon
               as={FaReddit}

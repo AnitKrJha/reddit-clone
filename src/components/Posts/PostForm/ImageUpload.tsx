@@ -17,7 +17,7 @@ const ImageUpload = (props: Props) => {
     <Flex justify={"center"} align="center" w="full">
       {selectedFile ? (
         <Flex direction="column" justify={"center"} align="center">
-          <Image src={selectedFile} maxHeight="400px" />
+          <Image src={selectedFile} maxHeight="400px" alt="uploding Image" />
           <Stack direction="row" mt={4}>
             <Button
               height="28px"

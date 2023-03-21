@@ -1,37 +1,30 @@
-import { PhoneIcon } from "@chakra-ui/icons";
+import { auth, firestore } from "@/src/firebase/clientApp";
 import {
-  Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
   Box,
+  Button,
   Divider,
-  Text,
+  Flex,
+  Icon,
   Input,
   InputGroup,
   InputLeftElement,
-  Stack,
-  Icon,
-  RadioGroup,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Radio,
-  Flex,
+  RadioGroup,
+  Stack,
+  Text,
 } from "@chakra-ui/react";
+import { doc, runTransaction, serverTimestamp } from "firebase/firestore";
+import { useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { BsEyeFill, BsFillPersonFill } from "react-icons/bs";
 import { HiLockClosed } from "react-icons/hi";
-import { useState } from "react";
-import { auth, firestore } from "@/src/firebase/clientApp";
-import {
-  doc,
-  getDoc,
-  runTransaction,
-  serverTimestamp,
-  setDoc,
-} from "firebase/firestore";
-import { useAuthState } from "react-firebase-hooks/auth";
 
 type Props = {
   open: boolean;
@@ -41,6 +34,7 @@ type Props = {
 const CreateCommunityModal = (props: Props) => {
   const [user] = useAuthState(auth);
   const { open, handleClose } = props;
+
   const [communityName, setCommunityName] = useState("");
   const [remainingCharacters, setRemainingCharacters] = useState(21);
   const [communityType, setCommunityType] = useState("Public");
@@ -62,6 +56,11 @@ const CreateCommunityModal = (props: Props) => {
     //validate the community
     setError("");
     setSuccess("");
+
+    if (!user) {
+      setError("You must be logged in to create a community");
+      return;
+    }
 
     const format = /[ `!@#$%^&*()+\-=[\]{};':"\\|,.<>/?~]/;
 
