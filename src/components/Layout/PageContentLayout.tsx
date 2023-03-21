@@ -6,8 +6,6 @@ type Props = {};
 const PageContentLayout = (props: PropsWithChildren<Props>) => {
   const { children } = props;
 
-  console.log(children);
-
   return (
     <Flex justify="center" my="4">
       <Flex width="95%" maxWidth="860px" justify="center">

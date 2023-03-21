@@ -1,13 +1,17 @@
+import { communityState } from "@/src/atoms/communitiesAtom";
+import AboutCommunity from "@/src/components/Community/AboutCommunity";
 import PageContentLayout from "@/src/components/Layout/PageContentLayout";
 import NewPostForm from "@/src/components/Posts/NewPostForm";
 import { auth } from "@/src/firebase/clientApp";
 import { Box, Text } from "@chakra-ui/react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useRecoilValue } from "recoil";
 
 type Props = {};
 
 const SubmitPostsPage = (props: Props) => {
   const [user] = useAuthState(auth);
+  const communityStateValue = useRecoilValue(communityState);
   return (
     <PageContentLayout>
       <>
@@ -16,7 +20,9 @@ const SubmitPostsPage = (props: Props) => {
         </Box>
         {user && <NewPostForm user={user} />}
       </>
-      <>About Community</>
+      <>
+        {/* <AboutCommunity communityData={communityStateValue.currentCommunity}/> */}
+      </>
     </PageContentLayout>
   );
 };

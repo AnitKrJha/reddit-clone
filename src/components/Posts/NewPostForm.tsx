@@ -1,5 +1,6 @@
 import { Post } from "@/src/atoms/postAtom";
 import { firestore, storage } from "@/src/firebase/clientApp";
+import useSelectedFile from "@/src/hooks/useSelectedFile";
 import { Flex, Icon } from "@chakra-ui/react";
 import { User } from "firebase/auth";
 import {
@@ -43,8 +44,8 @@ const NewPostForm = ({ user }: Props) => {
     title: "",
     body: "",
   });
+  const { selectedFile, setSelectedFile, onSelectFile } = useSelectedFile();
 
-  const [selectedFile, setSelectedFile] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -85,6 +86,7 @@ const NewPostForm = ({ user }: Props) => {
       }
 
       setSuccess("Congrats Your Post has been successfully created");
+      //redirect the user back to community page
       router.back();
     } catch (err: any) {
       setError(err.message);
@@ -92,22 +94,6 @@ const NewPostForm = ({ user }: Props) => {
     }
 
     setLoading(false);
-
-    //redirect the user back to community page
-  };
-
-  const onSelectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const reader = new FileReader();
-
-    if (event.target.files?.[0]) {
-      reader.readAsDataURL(event.target.files[0]);
-    }
-
-    reader.onload = (readerEvent) => {
-      if (readerEvent.target?.result) {
-        setSelectedFile(readerEvent.target.result as string);
-      }
-    };
   };
 
   const onTextChange = (
@@ -150,7 +136,7 @@ const NewPostForm = ({ user }: Props) => {
             selectedFile={selectedFile}
             setSelectedFile={setSelectedFile}
             setSelectedTab={setSelectedTab}
-            onSelectImage={onSelectImage}
+            onSelectImage={onSelectFile}
           />
         )}
       </Flex>

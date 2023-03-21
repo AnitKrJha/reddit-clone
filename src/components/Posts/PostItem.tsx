@@ -1,8 +1,16 @@
 import { Post } from "@/src/atoms/postAtom";
-import { Flex, Icon, Stack, Text, Image, Skeleton } from "@chakra-ui/react";
+import {
+  Flex,
+  Icon,
+  Stack,
+  Text,
+  Image,
+  Skeleton,
+  Spinner,
+} from "@chakra-ui/react";
 import moment from "moment";
-import React from "react";
-import { BsChat } from "react-icons/bs";
+import React, { useState } from "react";
+import { BsChat, BsExclamation, BsExclamationCircleFill } from "react-icons/bs";
 import { AiOutlineDelete } from "react-icons/ai";
 import {
   IoArrowDownCircleOutline,
@@ -12,17 +20,35 @@ import {
   IoArrowUpCircleSharp,
   IoBookmarkOutline,
 } from "react-icons/io5";
+import { CgClose } from "react-icons/cg";
 
 type Props = {
   post: Post;
   userIsCreator: boolean;
   userVoteValue?: number;
   onVote: () => void;
-  onDeletePost: () => void;
+  onDeletePost: (a: Post) => Promise<boolean>;
   onSelectPost: () => void;
 };
 
 const PostItem = (props: Props) => {
+  const [error, setError] = useState("");
+  const [imageLoading, setImageLoading] = useState(true);
+  const [deleteInProgress, setDeleteInProgress] = useState(false);
+
+  const handleDelete = async () => {
+    setDeleteInProgress(true);
+    try {
+      const success = await onDeletePost(post);
+      if (!success) {
+        throw new Error("Failed to Delete Post");
+      }
+    } catch (err: any) {
+      setError(err.message);
+    }
+    setDeleteInProgress(false);
+  };
+
   const {
     post,
     userIsCreator,
@@ -32,11 +58,10 @@ const PostItem = (props: Props) => {
     onSelectPost,
   } = props;
 
-  const [imageLoading, setImageLoading] = React.useState(true);
   return (
     <Flex
       border="1px solid"
-      bg="white"
+      bg={error ? "red.50" : "white"}
       borderColor="gray.300"
       borderRadius="4"
       _hover={{ borderColor: "gray.500" }}
@@ -76,6 +101,33 @@ const PostItem = (props: Props) => {
         />
       </Flex>
       <Flex direction={"column"} width="full">
+        {error && (
+          <Text
+            fontSize="10pt"
+            borderBottom="1px solid red"
+            color="red "
+            w="full"
+            p="5px 10px"
+            bg="red.100"
+            display="flex"
+            align="center"
+            gap="10px"
+          >
+            <Icon as={BsExclamationCircleFill} alignSelf="center" />
+            <Text>{error}</Text>
+            <Icon
+              as={CgClose}
+              alignSelf="center"
+              ml="auto"
+              onClick={() => {
+                setError("");
+              }}
+              fontSize="12pt"
+              p="2px"
+              _hover={{ bg: "red.50" }}
+            />
+          </Text>
+        )}
         <Stack spacing={1} p="10px">
           <Stack direction="row" spacing="0.6" fontSize="9pt">
             <Text fontWeight={600} color="black" mr={3}>
@@ -147,10 +199,17 @@ const PostItem = (props: Props) => {
               cursor="pointer"
               color="red"
               _hover={{ bg: "gray.200" }}
+              onClick={handleDelete}
             >
-              <Icon as={AiOutlineDelete} mr={2} />
+              {deleteInProgress ? (
+                <Spinner size="sm" />
+              ) : (
+                <>
+                  <Icon as={AiOutlineDelete} mr={2} />
 
-              <Text fontSize="9pt">{"Delete"}</Text>
+                  <Text fontSize="9pt">{"Delete"}</Text>
+                </>
+              )}
             </Flex>
           )}
         </Flex>

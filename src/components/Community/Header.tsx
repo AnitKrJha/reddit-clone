@@ -22,9 +22,15 @@ const Header = (props: Props) => {
       <Box height="50%" bg="blue.400" />
       <Flex justify="center" flexGrow="1" bg="white">
         <Flex width="95%" maxWidth="860px">
-          {communityData.imageUrl ? (
-            // <Image />
-            <></>
+          {communityStateValue.currentCommunity?.imageURL ? (
+            <Flex>
+              <Image
+                boxSize={"64px"}
+                src={communityStateValue.currentCommunity?.imageURL}
+                borderRadius="full"
+                border="solid 4px white"
+              />
+            </Flex>
           ) : (
             <Icon
               as={FaReddit}

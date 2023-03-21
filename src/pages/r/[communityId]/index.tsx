@@ -1,15 +1,17 @@
 import { auth, firestore } from "@/src/firebase/clientApp";
 import { doc, getDoc } from "firebase/firestore";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
-import { Community } from "@/src/atoms/communitiesAtom";
+import { Community, communityState } from "@/src/atoms/communitiesAtom";
 import safeJsonStringify from "safe-json-stringify";
-import React from "react";
+import { useEffect } from "react";
 import CommunityNotFound from "@/src/components/Community/CommunityNotFound";
 import Header from "@/src/components/Community/Header";
 import PageContentLayout from "@/src/components/Layout/PageContentLayout";
 import CreatePostLink from "@/src/components/Community/CreatePostLink";
 import Posts from "@/src/components/Posts/Posts";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useSetRecoilState } from "recoil";
+import AboutCommunity from "@/src/components/Community/AboutCommunity";
 
 type Props = {
   communityData: Community;
@@ -17,6 +19,16 @@ type Props = {
 
 const CommunityPage = (props: Props) => {
   const { communityData } = props;
+  console.log(communityData);
+
+  const setCommunityStateValue = useSetRecoilState(communityState);
+
+  useEffect(() => {
+    setCommunityStateValue((prev) => ({
+      ...prev,
+      currentCommunity: communityData,
+    }));
+  }, []);
 
   if (!communityData) {
     return <CommunityNotFound />;
@@ -30,7 +42,9 @@ const CommunityPage = (props: Props) => {
           <CreatePostLink />
           <Posts communityData={communityData} />
         </>
-        <>HEllo2</>
+        <>
+          <AboutCommunity communityData={communityData} />
+        </>
       </PageContentLayout>
     </>
   );

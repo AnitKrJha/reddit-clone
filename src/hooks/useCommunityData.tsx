@@ -80,7 +80,7 @@ const useCommunityData = (props?: Props) => {
       const batch = writeBatch(firestore);
       const newSnippet: CommunitySnippet = {
         communityId: communityData.id,
-        imageUrl: communityData.imageUrl || "",
+        imageUrl: communityData.imageURL || "",
       };
 
       batch.set(
