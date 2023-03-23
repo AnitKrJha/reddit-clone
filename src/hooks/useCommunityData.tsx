@@ -1,10 +1,12 @@
 import {
   collection,
   doc,
+  getDoc,
   getDocs,
   increment,
   writeBatch,
 } from "firebase/firestore";
+import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState, useSetRecoilState } from "recoil";
@@ -22,6 +24,7 @@ const useCommunityData = (props?: Props) => {
   const [user] = useAuthState(auth);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const router = useRouter();
   const setAuthModalState = useSetRecoilState(authModalState);
   const [communityStateValue, setCommunityStateValue] =
     useRecoilState(communityState);
@@ -66,9 +69,49 @@ const useCommunityData = (props?: Props) => {
   };
 
   useEffect(() => {
-    if (!user) return;
+    if (!user) {
+      setCommunityStateValue((prev) => ({
+        ...prev,
+        mySnippets: [],
+      }));
+      return;
+    }
     getMySnippets();
   }, [user]);
+
+  const getCommunityData = async (communityId: string) => {
+    // this causes weird memory leak error - not sure why
+    // setLoading(true);
+    console.log("GETTING COMMUNITY DATA");
+
+    try {
+      const communityDocRef = doc(
+        firestore,
+        "communities",
+        communityId as string
+      );
+      const communityDoc = await getDoc(communityDocRef);
+      // setCommunityStateValue((prev) => ({
+      //   ...prev,
+      //   visitedCommunities: {
+      //     ...prev.visitedCommunities,
+      //     [communityId as string]: {
+      //       id: communityDoc.id,
+      //       ...communityDoc.data(),
+      //     } as Community,
+      //   },
+      // }));
+      setCommunityStateValue((prev) => ({
+        ...prev,
+        currentCommunity: {
+          id: communityDoc.id,
+          ...communityDoc.data(),
+        } as Community,
+      }));
+    } catch (error: any) {
+      console.log("getCommunityData error", error.message);
+    }
+  };
 
   const joinCommunity = async (communityData: Community) => {
     //batched write
@@ -145,6 +188,20 @@ const useCommunityData = (props?: Props) => {
 
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    // if (ssrCommunityData) return;
+    const { communityId } = router.query;
+    if (communityId) {
+      const communityData = communityStateValue.currentCommunity;
+
+      if (!communityData) {
+        getCommunityData(communityId as string);
+        return;
+      }
+      // console.log("this is happening", communityStateValue);
+    }
+  }, [router.query, communityStateValue.currentCommunity]);
 
   return {
     communityStateValue,

@@ -21,31 +21,48 @@ import {
   IoBookmarkOutline,
 } from "react-icons/io5";
 import { CgClose } from "react-icons/cg";
+import { useRouter } from "next/router";
 
 type Props = {
   post: Post;
   userIsCreator: boolean;
   userVoteValue?: number;
-  onVote: () => void;
-  onDeletePost: (a: Post) => Promise<boolean>;
-  onSelectPost: () => void;
+  onVote: (
+    event: React.MouseEvent<SVGElement, MouseEvent>,
+    a: Post,
+    vote: number,
+    commid: string
+  ) => Promise<void>;
+  onDeletePost: (
+    event: React.MouseEvent<any | MouseEvent>,
+    a: Post
+  ) => Promise<boolean>;
+  onSelectPost?: (a: Post) => void;
+  error?: any;
+  setError?: any;
 };
 
 const PostItem = (props: Props) => {
-  const [error, setError] = useState("");
   const [imageLoading, setImageLoading] = useState(true);
   const [deleteInProgress, setDeleteInProgress] = useState(false);
-
-  const handleDelete = async () => {
+  const router = useRouter();
+  const handleDelete = async (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
     setDeleteInProgress(true);
     try {
-      const success = await onDeletePost(post);
+      const success = await onDeletePost(event, post);
       if (!success) {
         throw new Error("Failed to Delete Post");
+      }
+
+      if (!onSelectPost) {
+        router.push(`/r/${post.communityId}`);
       }
     } catch (err: any) {
       setError(err.message);
     }
+
     setDeleteInProgress(false);
   };
 
@@ -56,6 +73,8 @@ const PostItem = (props: Props) => {
     onDeletePost,
     onVote,
     onSelectPost,
+    error,
+    setError,
   } = props;
 
   return (
@@ -63,15 +82,18 @@ const PostItem = (props: Props) => {
       border="1px solid"
       bg={error ? "red.50" : "white"}
       borderColor="gray.300"
-      borderRadius="4"
-      _hover={{ borderColor: "gray.500" }}
+      borderRadius={onSelectPost ? "4" : "4px 4px 0 0"}
+      _hover={{ borderColor: onSelectPost ? "gray.500" : "none" }}
       cursor="pointer"
-      onClick={onSelectPost}
+      borderBottom={!onSelectPost ? "none" : ""}
+      onClick={() => {
+        onSelectPost && onSelectPost(post);
+      }}
     >
       <Flex
         direction="column"
         align="center"
-        bg="gray.100"
+        bg={onSelectPost ? "gray.100" : "white"}
         p="2"
         width="40px"
         borderRadius={4}
@@ -82,7 +104,9 @@ const PostItem = (props: Props) => {
           }
           color={userVoteValue === 1 ? "brand.100" : "gray.400"}
           fontSize="22pt"
-          onClick={onVote}
+          onClick={(e) => {
+            onVote(e, post, 1, post.communityId);
+          }}
           cursor="pointer"
           title="upVote this post"
         />
@@ -95,7 +119,9 @@ const PostItem = (props: Props) => {
           }
           color={userVoteValue === -1 ? "#4379ff" : "gray.400"}
           fontSize="22pt"
-          onClick={onVote}
+          onClick={(e) => {
+            onVote(e, post, -1, post.communityId);
+          }}
           cursor="pointer"
           title="downVote this post"
         />

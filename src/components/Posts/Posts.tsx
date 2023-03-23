@@ -16,13 +16,14 @@ type Props = {
 const Posts = ({ communityData }: Props) => {
   const [user] = useAuthState(auth);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
   const {
     postStateValue,
     setPostStateValue,
     onSelectPost,
     onDeletePost,
     onVote,
+    error,
+    setError,
   } = usePosts();
 
   const getPosts = async () => {
@@ -71,11 +72,16 @@ const Posts = ({ communityData }: Props) => {
           {postStateValue.posts.map((post) => (
             <PostItem
               key={post.id}
+              error={error}
+              setError={setError}
               userIsCreator={user?.uid === post.creatorId}
               post={post}
               onDeletePost={onDeletePost}
               onSelectPost={onSelectPost}
-              userVoteValue={undefined}
+              userVoteValue={
+                postStateValue.postVotes.find((vote) => vote.postId === post.id)
+                  ?.voteValue
+              }
               onVote={onVote}
             />
           ))}

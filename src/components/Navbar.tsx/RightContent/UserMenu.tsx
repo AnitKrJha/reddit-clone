@@ -88,7 +88,7 @@ const UserMenu = (props: Props) => {
               _hover={{ bg: "blue.500", textColor: "white" }}
               onClick={async () => {
                 await signOut();
-                resetCommunityData();
+                // resetCommunityData();
               }}
             >
               <Flex align="center">
