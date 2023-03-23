@@ -50,10 +50,19 @@ const AboutCommunity = ({ communityData }: Props) => {
       await updateDoc(doc(firestore, "communities", communityData.id), {
         imageURL: downloadURL,
       });
+      await updateDoc(
+        doc(
+          firestore,
+          `users/${user?.uid}/communitySnippets`,
+          communityData.id
+        ),
+        { imageUrl: downloadURL }
+      );
 
       //update the recoil state
       setCommunityStateValue((prev) => ({
         ...prev,
+
         currentCommunity: {
           ...prev.currentCommunity,
 

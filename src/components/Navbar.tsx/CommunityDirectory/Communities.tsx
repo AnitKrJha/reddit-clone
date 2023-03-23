@@ -1,4 +1,5 @@
 import { communityState } from "@/src/atoms/communitiesAtom";
+import useCommunityData from "@/src/hooks/useCommunityData";
 import { Box, Flex, Icon, MenuItem, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { FaReddit } from "react-icons/fa";
@@ -11,7 +12,9 @@ type Props = {};
 
 const Communities = (props: Props) => {
   const [open, setOpen] = useState(false);
-  const mySnippets = useRecoilValue(communityState).mySnippets;
+  const {
+    communityStateValue: { mySnippets },
+  } = useCommunityData();
 
   return (
     <>

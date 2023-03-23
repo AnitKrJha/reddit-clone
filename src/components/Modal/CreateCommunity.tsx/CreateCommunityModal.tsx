@@ -21,6 +21,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { doc, runTransaction, serverTimestamp } from "firebase/firestore";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { BsEyeFill, BsFillPersonFill } from "react-icons/bs";
@@ -48,8 +49,12 @@ const CreateCommunityModal = (props: Props) => {
     setRemainingCharacters(21 - e.target.value.length);
   };
 
+  const router = useRouter();
+
   const handleSuccess = async () => {
     setSuccess(`Congrats ! r/${communityName} has been successfully created`);
+    handleClose();
+    router.push(`/r/${communityName}`);
   };
 
   const handleCreateCommunity = async () => {
