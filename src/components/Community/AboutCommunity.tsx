@@ -46,7 +46,7 @@ const AboutCommunity = ({ communityData }: Props) => {
       const imageRef = ref(storage, `communities/${communityData.id}/image`);
       await uploadString(imageRef, selectedFile, "data_url");
       const downloadURL = await getDownloadURL(imageRef);
-      //update the community document with the imageUrl
+      //update the community document with the imageURL
       await updateDoc(doc(firestore, "communities", communityData.id), {
         imageURL: downloadURL,
       });
@@ -56,6 +56,7 @@ const AboutCommunity = ({ communityData }: Props) => {
         ...prev,
         currentCommunity: {
           ...prev.currentCommunity,
+
           imageURL: downloadURL,
         } as Community,
       }));

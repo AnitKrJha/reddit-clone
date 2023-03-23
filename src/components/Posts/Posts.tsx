@@ -61,7 +61,7 @@ const Posts = ({ communityData }: Props) => {
 
   useEffect(() => {
     getPosts();
-  }, []);
+  }, [communityData]);
 
   return (
     <>

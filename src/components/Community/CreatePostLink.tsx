@@ -1,5 +1,6 @@
 import { authModalState } from "@/src/atoms/authModalAtom";
 import { auth } from "@/src/firebase/clientApp";
+import useDirectory from "@/src/hooks/useDirectory";
 import { Flex, Icon, Input } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -18,6 +19,8 @@ const CreatePostLink: React.FC<CreatePostProps> = () => {
 
   const setAuthModalState = useSetRecoilState(authModalState);
 
+  const { toggleMenuOpen } = useDirectory();
+
   const onClick = () => {
     // Could check for user to open auth modal before redirecting to submit
     if (!user) {
@@ -30,6 +33,8 @@ const CreatePostLink: React.FC<CreatePostProps> = () => {
       router.push(`/r/${communityId}/submit`);
       return;
     }
+
+    toggleMenuOpen();
   };
   return (
     <Flex

@@ -19,7 +19,12 @@ const SubmitPostsPage = (props: Props) => {
         <Box padding="14px 0px" borderBottom="1px solid" borderColor="white">
           <Text>Create a Post</Text>
         </Box>
-        {user && <NewPostForm user={user} />}
+        {user && (
+          <NewPostForm
+            user={user}
+            communityImageUrl={communityStateValue.currentCommunity?.imageURL}
+          />
+        )}
       </>
       <>
         {communityStateValue.currentCommunity && (

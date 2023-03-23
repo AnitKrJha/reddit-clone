@@ -22,6 +22,7 @@ import TabItem from "./TabItem";
 
 type Props = {
   user: User;
+  communityImageUrl?: string;
 };
 
 const formTabs: TabItemType[] = [
@@ -37,7 +38,7 @@ export type TabItemType = {
   icon: typeof Icon.arguments;
 };
 
-const NewPostForm = ({ user }: Props) => {
+const NewPostForm = ({ user, communityImageUrl }: Props) => {
   const router = useRouter();
   const [selectedTab, setSelectedTab] = useState(formTabs[0].title);
   const [textInputs, setTextInputs] = useState({
@@ -60,6 +61,7 @@ const NewPostForm = ({ user }: Props) => {
     const newPost: Post = {
       communityId: communityId as string,
       creatorId: user?.uid,
+      communityImageURL: communityImageUrl || "",
       creatorDisplayName: user.displayName || user.email!.split("@")[0],
       title: textInputs.title,
       body: textInputs.body,
@@ -79,7 +81,7 @@ const NewPostForm = ({ user }: Props) => {
         await uploadString(imageRef, selectedFile, "data_url");
         const downloadUrl = await getDownloadURL(imageRef);
 
-        //update post doc by adding imageUrl
+        //update post doc by adding imageURL
         await updateDoc(postDocRef, {
           imageUrl: downloadUrl,
         });

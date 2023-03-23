@@ -12,7 +12,7 @@ export type Post = {
   voteStatus: number;
   imageUrl?: string;
   createdAt: Timestamp;
-  communityImageUrl?: string;
+  communityImageURL?: string;
 };
 
 export type PostVote = {

@@ -28,7 +28,7 @@ const CommunityPage = (props: Props) => {
       ...prev,
       currentCommunity: communityData,
     }));
-  }, []);
+  }, [communityData]);
 
   if (!communityData) {
     return <CommunityNotFound />;

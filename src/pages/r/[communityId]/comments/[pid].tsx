@@ -15,8 +15,14 @@ import { useAuthState } from "react-firebase-hooks/auth";
 type Props = {};
 
 const PostPage = (props: Props) => {
-  const { setPostStateValue, postStateValue, onDeletePost, onVote } =
-    usePosts();
+  const {
+    setPostStateValue,
+    postStateValue,
+    onDeletePost,
+    error,
+    setError,
+    onVote,
+  } = usePosts();
 
   const [user] = useAuthState(auth);
   const { communityStateValue } = useCommunityData();
@@ -55,6 +61,8 @@ const PostPage = (props: Props) => {
       <>
         {postStateValue.selectedPost && (
           <PostItem
+            error={error}
+            setError={error}
             post={postStateValue.selectedPost}
             onVote={onVote}
             onDeletePost={onDeletePost}

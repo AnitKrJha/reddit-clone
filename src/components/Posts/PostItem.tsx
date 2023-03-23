@@ -10,7 +10,12 @@ import {
 } from "@chakra-ui/react";
 import moment from "moment";
 import React, { useState } from "react";
-import { BsChat, BsExclamation, BsExclamationCircleFill } from "react-icons/bs";
+import {
+  BsChat,
+  BsDot,
+  BsExclamation,
+  BsExclamationCircleFill,
+} from "react-icons/bs";
 import { AiOutlineDelete } from "react-icons/ai";
 import {
   IoArrowDownCircleOutline,
@@ -22,6 +27,8 @@ import {
 } from "react-icons/io5";
 import { CgClose } from "react-icons/cg";
 import { useRouter } from "next/router";
+import { FaReddit } from "react-icons/fa";
+import Link from "next/link";
 
 type Props = {
   post: Post;
@@ -145,7 +152,8 @@ const PostItem = (props: Props) => {
               as={CgClose}
               alignSelf="center"
               ml="auto"
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 setError("");
               }}
               fontSize="12pt"
@@ -155,10 +163,31 @@ const PostItem = (props: Props) => {
           </Text>
         )}
         <Stack spacing={1} p="10px">
-          <Stack direction="row" spacing="0.6" fontSize="9pt">
-            <Text fontWeight={600} color="black" mr={3}>
-              r/{post.communityId}
-            </Text>
+          <Stack direction="row" spacing="0.6" fontSize="9pt" align="center">
+            {post.communityImageURL ? (
+              <Image
+                src={post.communityImageURL}
+                borderRadius="full"
+                boxSize="18px"
+                mr={2}
+              />
+            ) : (
+              <Icon as={FaReddit} fontSize="16pt" mr={1} color="blue.500" />
+            )}
+            <Link
+              href={`/r/${post.communityId}`}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Text
+                fontWeight={600}
+                color="black"
+                mr={0}
+                _hover={{ textDecor: "underline" }}
+              >
+                r/{post.communityId}
+              </Text>
+            </Link>
+            <Icon as={BsDot} />
             <Text>
               Posted by u/{post.creatorDisplayName}{" "}
               {moment(new Date(post.createdAt.seconds * 1000)).fromNow()}
